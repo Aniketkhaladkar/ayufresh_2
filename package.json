@@ -1,0 +1,15 @@
+{
+  "name": "ayufresh-website",
+  "version": "1.0.0",
+  "description": "Ayufresh Botanical Oral Care — Full Stack Website",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "nodemailer": "^8.0.5",
+    "sql.js": "^1.9.0"
+  }
+}

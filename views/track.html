@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Track Order — Ayufresh</title>
+<link rel="stylesheet" href="/css/styles.css">
+
+<style>
+.track-section {
+  min-height: 100vh;
+  padding: 140px 24px 80px;
+  background: var(--cream);
+  text-align: center;
+}
+
+.track-card {
+  max-width: 600px;
+  margin: auto;
+  background: var(--white);
+  padding: 40px;
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(229,214,196,0.4);
+}
+
+.track-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.track-input {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.track-input input {
+  flex: 1;
+  padding: 14px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--sand-dark);
+}
+
+.track-btn {
+  padding: 14px 22px;
+  background: var(--bark);
+  color: var(--sand);
+  border-radius: var(--r-sm);
+  font-weight: 600;
+}
+
+.status-box {
+  margin-top: 30px;
+  text-align: left;
+}
+
+/* 🔥 Progress Bar */
+.progress {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  position: relative;
+}
+
+.progress::before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: #ddd;
+  z-index: 0;
+}
+
+.progress-step {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  width: 100%;
+}
+
+.circle {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #ccc;
+  margin: auto;
+}
+
+.active .circle {
+  background: var(--bark);
+}
+
+.label {
+  margin-top: 8px;
+  font-size: 0.75rem;
+  color: var(--text-light);
+}
+
+.active .label {
+  color: var(--bark);
+  font-weight: 600;
+}
+
+.order-details {
+  margin-top: 20px;
+  font-size: 0.9rem;
+}
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+  <a href="/" class="nav-logo"><img src="/images/ayufresh_logo.png"></a>
+</nav>
+
+<section class="track-section">
+
+  <div class="track-card">
+    <h2 class="track-title">Track Your Order</h2>
+
+    <div class="track-input">
+      <input type="text" id="orderId" placeholder="Enter Order ID (e.g. AYU-2026...)">
+      <button class="track-btn" onclick="trackOrder()">Track</button>
+    </div>
+
+    <div id="result"></div>
+  </div>
+
+</section>
+
+<script>
+async function trackOrder() {
+  const id = document.getElementById("orderId").value;
+
+  if (!id) {
+    alert("Enter Order ID");
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/track/${id}`);
+    const data = await res.json();
+
+    if (!data || data.error) {
+      document.getElementById("result").innerHTML = "<p>❌ Order not found</p>";
+      return;
+    }
+
+    renderOrder(data);
+
+  } catch {
+    document.getElementById("result").innerHTML = "<p>⚠️ Error fetching order</p>";
+  }
+}
+
+function renderOrder(order) {
+
+  const steps = ["placed", "shipped", "delivered"];
+
+  const currentIndex = steps.indexOf(order.status);
+
+  let progressHTML = `<div class="progress">`;
+
+  steps.forEach((step, i) => {
+    progressHTML += `
+      <div class="progress-step ${i <= currentIndex ? "active" : ""}">
+        <div class="circle"></div>
+        <div class="label">${step.toUpperCase()}</div>
+      </div>
+    `;
+  });
+
+  progressHTML += `</div>`;
+
+  document.getElementById("result").innerHTML = `
+    <div class="status-box">
+
+      <p><strong>Order ID:</strong> ${order.order_id}</p>
+      <p><strong>Status:</strong> ${order.status.toUpperCase()}</p>
+      <p><strong>Total:</strong> ₹${order.total}</p>
+
+      ${progressHTML}
+
+      <div class="order-details">
+        <p><strong>Name:</strong> ${order.name}</p>
+        <p><strong>Phone:</strong> ${order.phone}</p>
+        <p><strong>Address:</strong> ${order.address}</p>
+      </div>
+
+    </div>
+  `;
+}
+</script>
+
+</body>
+</html>

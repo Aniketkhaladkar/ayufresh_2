@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order — Ayufresh Botanical Oral Care</title>
+<link rel="stylesheet" href="/css/styles.css">
+<style>
+.order-hero {
+  background: linear-gradient(160deg, var(--bark) 0%, var(--walnut) 50%, var(--bark-light) 100%);
+  padding: 170px 48px 100px; text-align: center; position: relative; overflow: hidden;
+}
+.order-hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 40%, rgba(229,214,196,0.1) 0%, transparent 60%);
+}
+.order-hero h1 { color: var(--sand-light); font-size: clamp(2.5rem, 4vw, 3.8rem); margin-bottom: 16px; position: relative; z-index: 1; }
+.order-hero p { color: rgb(255, 255, 255); font-size: 1.1rem; max-width: 550px; margin: 0 auto; position: relative; z-index: 1; }
+
+.order-content {
+  max-width: 1160px; margin: 0 auto; padding: 90px 48px;
+  display: grid; grid-template-columns: 1fr 1.3fr; gap: 70px; align-items: start;
+}
+
+/* Product Card */
+.product-card {
+  background: var(--white); border-radius: var(--r-xl); padding: 44px; text-align: center;
+  border: 1px solid rgba(229,214,196,0.3); position: sticky; top: 100px;
+  box-shadow: var(--shadow-md);
+}
+.product-img-wrap {
+  width: 240px; height: 240px; margin: 0 auto 28px;
+  background: radial-gradient(circle, rgba(229,214,196,0.3) 0%, transparent 70%);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative;
+}
+.product-img-wrap::before {
+  content: ''; position: absolute; inset: 16px;
+  border: 2px dashed rgba(229,214,196,0.4); border-radius: 50%; animation: spinSlow 30s linear infinite;
+}
+.product-img-wrap img {
+  width: 160px; border-radius: var(--r-md);
+  filter: drop-shadow(0 10px 30px rgba(0,0,0,0.12));
+  animation: floatSlow 6s ease-in-out infinite;
+}
+.product-name { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--bark); margin-bottom: 6px; }
+.product-sub { font-size: 0.85rem; color: var(--text-light); margin-bottom: 22px; }
+.product-price {
+  font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 700; color: var(--bark);
+}
+.product-price small { font-size: 1rem; color: var(--text-light); font-family: 'Outfit', sans-serif; font-weight: 400; }
+.product-vol { font-size: 0.85rem; color: var(--bark-mid); margin-top: 4px; }
+.product-badges { display: flex; gap: 10px; justify-content: center; margin-top: 22px; flex-wrap: wrap; }
+.p-badge {
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  background: var(--sand-light); color: var(--bark-mid); padding: 6px 14px; border-radius: var(--r-full);
+}
+
+/* Order Form */
+.order-form-card {
+  background: var(--white); border-radius: var(--r-xl); padding: 48px;
+  border: 1px solid rgba(229,214,196,0.3); box-shadow: var(--shadow-md);
+}
+.order-form-card h2 { font-size: 1.8rem; margin-bottom: 8px; }
+.order-form-card > p { color: var(--text-light); margin-bottom: 36px; }
+
+/* Quantity Selector */
+.qty-wrap { display: flex; align-items: center; gap: 18px; }
+.qty-selector {
+  display: flex; align-items: center; gap: 14px;
+  background: var(--cream); border: 2px solid var(--sand);
+  border-radius: var(--r-sm); padding: 6px 14px;
+}
+.qty-btn {
+  width: 38px; height: 38px; border-radius: 50%; background: var(--sand-light);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; font-weight: 700; color: var(--bark); transition: var(--ease);
+}
+.qty-btn:hover { background: var(--sand); transform: scale(1.1); }
+.qty-val {
+  font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 700;
+  color: var(--bark); min-width: 30px; text-align: center;
+}
+.qty-total {
+  font-size: 0.9rem; color: var(--bark-mid); margin-left: 8px;
+}
+.qty-total strong { color: var(--bark); font-size: 1.1rem; }
+
+/* Submit Button */
+.btn-order {
+  width: 100%; padding: 18px; border-radius: var(--r-sm);
+  background: var(--bark); color: var(--sand); font-size: 1rem;
+  font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+  margin-top: 28px; transition: var(--ease); position: relative; overflow: hidden;
+}
+.btn-order:hover { background: var(--walnut); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+.btn-order:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
+  background: var(--bark); color: var(--sand); padding: 16px 32px; border-radius: var(--r-full);
+  font-size: 0.9rem; z-index: 3000; box-shadow: var(--shadow-xl);
+  transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1); opacity: 0;
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+.toast.error { background: #a04040; color: #fff; }
+
+/* Free shipping bar */
+.free-ship {
+  background: linear-gradient(90deg, var(--sand-light), var(--sand));
+  padding: 10px 24px; border-radius: var(--r-sm); margin-bottom: 28px;
+  text-align: center; font-size: 0.82rem; font-weight: 600; color: var(--bark);
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 768px) {
+  .order-hero { padding: 140px 24px 70px; }
+  .order-content { grid-template-columns: 1fr; padding: 60px 24px; gap: 40px; }
+  .product-card { position: static; padding: 32px 24px; }
+  .order-form-card { padding: 32px 24px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+  <a href="/" class="nav-logo"><img src="/images/ayufresh_logo.png" alt="Ayufresh"></a>
+  <div class="nav-links">
+    <a href="/">Home</a><a href="/about">About</a><a href="/contact">Contact</a>
+    <a href="/order" class="nav-cta" style="color: #fff;">Order Now</a>
+  </div>
+  <div class="hamburger" id="hamburger" onclick="toggleMobile()"><span></span><span></span><span></span></div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="/" onclick="closeMobile()">Home</a><a href="/about" onclick="closeMobile()">About</a>
+  <a href="/contact" onclick="closeMobile()">Contact</a><a href="/order" onclick="closeMobile()">Order Now</a>
+</div>
+
+<section class="order-hero">
+  <h1>Order Ayufresh</h1>
+  <p>Get your bottle of natural Ayurvedic oral care delivered to your doorstep.</p>
+</section>
+
+<div class="order-content">
+  <div class="product-card reveal-left">
+    <div class="product-img-wrap">
+      <img src="/images/product_image.jpeg" alt="Ayufresh Product">
+    </div>
+    <div class="product-name">Ayufresh</div>
+    <div class="product-sub">Botanical Oral Care</div>
+    <div class="product-price">₹249 <small>/ bottle</small></div>
+    <div class="product-vol">100ml — Herbal Mouth Protector</div>
+    <div class="product-badges">
+      <span class="p-badge">🌿 100% Organic</span>
+      <span class="p-badge">🇮🇳 Made in India</span>
+      <!-- <span class="p-badge">🚚 Free Shipping</span> -->
+    </div>
+  </div>
+
+  <div class="order-form-card reveal-right">
+    <h2>Place Your Order</h2>
+    <p>Free shipping across India. Pay on delivery available.</p>
+    <!-- <div class="free-ship">🚚 FREE DELIVERY — All India Shipping Included</div> -->
+    <form id="orderForm">
+      <div class="form-row">
+        <div class="form-group"><label>Full Name *</label><input type="text" name="name" placeholder="Your full name" required></div>
+        <div class="form-group"><label>Phone Number *</label><input type="tel" name="phone" placeholder="+91 XXXXX XXXXX" required></div>
+      </div>
+      <div class="form-group"><label>Email Address *</label><input type="email" name="email" placeholder="your@email.com" required></div>
+      <div class="form-group"><label>Delivery Address *</label><textarea name="address" placeholder="House no., Street, Area, Landmark" required></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label>City *</label><input type="text" name="city" placeholder="City" required></div>
+        <div class="form-group"><label>State</label><input type="text" name="state" placeholder="Maharashtra" value="Maharashtra"></div>
+      </div>
+      <div class="form-group"><label>PIN Code *</label><input type="text" name="pin" placeholder="411001" maxlength="6" required></div>
+      <div class="form-group">
+        <label>Quantity</label>
+        <div class="qty-wrap">
+          <div class="qty-selector">
+            <button type="button" class="qty-btn" onclick="changeQty(-1)">−</button>
+            <span class="qty-val" id="qtyVal">1</span>
+            <button type="button" class="qty-btn" onclick="changeQty(1)">+</button>
+          </div>
+          <div class="price-breakdown"><div>Product Total: ₹<span id="productTotal">249</span></div><div>Delivery Charges: ₹<span id="deliveryDisplay">70</span></div><div><strong>Total: ₹<span id="totalDisplay">319</span></strong></div></div>
+        </div>
+        <input type="hidden" name="quantity" id="qtyInput" value="1">
+      </div>
+      <div class="form-group"><label>Payment Method *</label>
+        <select name="payment" required>
+          <option value="cod">Cash on Delivery (COD)</option>
+          <option value="upi">UPI Payment</option>
+          <option value="bank">Bank Transfer</option>
+        </select>
+      </div>
+      <button type="submit" class="btn-order" id="orderBtn">Place Order — ₹<span id="btnTotal">249</span></button>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand"><img src="/images/ayufresh_logo.png" alt="Ayufresh"><p>Ayufresh Botanical Oral Care. Made in Pune, Maharashtra.</p></div>
+    <div class="footer-col"><h4>Pages</h4><a href="/">Home</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/order">Order</a></div>
+    <div class="footer-col"><h4>Product</h4><a href="/#benefits">Benefits</a><a href="/#benefits">Ingredients</a></div>
+    <div class="footer-col"><h4>Connect</h4><a href="#">Instagram</a><a href="#">WhatsApp</a><a href="#">Facebook</a></div>
+  </div>
+  <div class="footer-bottom">© 2026 Ayufresh. All rights reserved.</div>
+</footer>
+
+<script src="/js/main.js"></script>
+<!-- ONLY SCRIPT PART CHANGED — your design untouched -->
+
+<script>
+const PRICE = 249;
+let DELIVERY = 70;
+let qty = 1;
+
+function changeQty(d) {
+  qty = Math.max(1, Math.min(10, qty + d));
+
+  document.getElementById('qtyVal').textContent = qty;
+  document.getElementById('qtyInput').value = qty;
+
+  // 🔥 FIX — offer logic
+  let productTotal = (qty === 2) ? 399 : qty * PRICE;
+
+  // 🔥 FIX — dynamic delivery
+  const state = document.querySelector('[name="state"]').value;
+  DELIVERY = (state === "Maharashtra") ? 50 : 70;
+
+  const finalTotal = productTotal + DELIVERY;
+
+  // 🔥 FIX — update UI properly
+  document.getElementById('productTotal').textContent = productTotal;
+  document.getElementById('totalDisplay').textContent = finalTotal;
+  document.getElementById('btnTotal').textContent = finalTotal;
+  document.getElementById('deliveryDisplay').textContent = DELIVERY;
+}
+
+// 🔥 FIX — update when state changes
+document.querySelector('[name="state"]').addEventListener('input', () => {
+  changeQty(0);
+});
+
+function showToast(msg, isError = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (isError ? ' error' : '');
+  setTimeout(() => t.className = 'toast', 3500);
+}
+
+document.getElementById('orderForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const btn = document.getElementById('orderBtn');
+
+  // 🔥 FIX — prevent multiple clicks
+  if (btn.disabled) return;
+
+  btn.textContent = 'Processing...';
+  btn.disabled = true;
+
+  const fd = new FormData(e.target);
+  const data = Object.fromEntries(fd);
+
+  data.quantity = qty;
+
+  // 🔥 FIX — calculate total
+  let productTotal = (qty === 2) ? 399 : qty * PRICE;
+  const state = data.state || "Maharashtra";
+  const delivery = (state === "Maharashtra") ? 50 : 70;
+  const finalTotal = productTotal + delivery;
+
+  try {
+
+    // 🔥 FIX — COD FLOW
+    if (data.payment === "cod") {
+      const res = await fetch('/api/orders', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(data)
+      });
+
+      const json = await res.json();
+
+      if (json.success) {
+        window.location.href = `/order-success?id=${json.order_id}&total=${json.total}`;
+      } else {
+        showToast("Order failed", true);
+      }
+    }
+
+    // 🔥 FIX — ONLINE PAYMENT
+    else {
+      const payRes = await fetch('/api/create-payment', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ amount: finalTotal })
+      });
+
+      const order = await payRes.json();
+
+      const options = {
+        key: "rzp_test_xxxxxxxxx", // 🔥 FIX — replace with your real key
+        amount: order.amount,
+        currency: "INR",
+        name: "Ayufresh",
+        description: "Order Payment",
+
+        handler: async function () {
+          const res2 = await fetch('/api/orders', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify(data)
+          });
+
+          const json2 = await res2.json();
+          window.location.href = `/order-success?id=${json2.order_id}&total=${json2.total}`;
+        },
+
+        // 🔥 FIX — handle cancel
+        modal: {
+          ondismiss: function () {
+            showToast("Payment cancelled");
+          }
+        }
+      };
+
+      const rzp = new Razorpay(options);
+      rzp.open();
+    }
+
+  } catch (err) {
+    showToast('⚠️ Error placing order', true);
+  }
+
+  // 🔥 FIX — reset button correctly
+  btn.textContent = "Place Order — ₹" + finalTotal;
+  btn.disabled = false;
+});
+
+// 🔥 FIX — initial load calculation
+changeQty(0);
+</script>
+
+<!-- Razorpay script -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</body>
+</html>
