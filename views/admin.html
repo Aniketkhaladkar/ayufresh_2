@@ -33,65 +33,68 @@ body { background: var(--ivory); }
 /* Dashboard */
 .dashboard { display: none; }
 .dash-header {
-  background: var(--white); padding: 20px 48px;
+  background: var(--white); padding: 16px 32px;
   display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid rgba(229,214,196,0.3);
 }
-.dash-header img { height: 85px; transform: scale(1.3);transform-origin: left center; transition: var(--ease); }
+.dash-header img { height: 85px; transform: scale(1.3); transform-origin: left center; }
 .dash-header-right { display: flex; align-items: center; gap: 20px; }
 .btn-logout {
   background: var(--bark); color: var(--white); padding: 8px 22px;
   border-radius: var(--r-full); font-size: 0.8rem; font-weight: 600;
   letter-spacing: 0.06em; text-transform: uppercase; transition: var(--ease);
 }
-.btn-logout:hover { background: rgba(229,214,196,0.25); }
+.btn-logout:hover { background: var(--walnut); }
 
-.dash-content { max-width: 1300px; margin: 0 auto; padding: 36px 48px; }
+/* ── FULL WIDTH DASHBOARD ── */
+.dash-content { max-width: 100%; padding: 24px 28px; }
 
 /* Stats */
-.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 36px; }
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
 .stat-card {
-  background: var(--white); border-radius: var(--r-lg); padding: 28px;
+  background: var(--white); border-radius: var(--r-lg); padding: 20px;
   border: 1px solid rgba(229,214,196,0.3);
 }
-.stat-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--bark-mid); }
+.stat-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--bark-mid); }
 .stat-value {
-  font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 700; color: var(--bark); margin-top: 6px;
+  font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 700; color: var(--bark); margin-top: 4px;
 }
 
 /* Tabs */
-.tabs { display: flex; gap: 4px; margin-bottom: 24px; }
+.tabs { display: flex; gap: 4px; margin-bottom: 18px; }
 .tab-btn {
-  padding: 12px 28px; border-radius: var(--r-full); font-size: 0.82rem;
+  padding: 10px 24px; border-radius: var(--r-full); font-size: 0.8rem;
   font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
   background: var(--sand-light); color: var(--bark-mid); transition: var(--ease);
 }
 .tab-btn.active { background: var(--bark); color: var(--sand); }
 .tab-btn:hover:not(.active) { background: var(--sand); }
-
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
 
-/* Orders Table */
+/* ══════ COMPACT TABLE ══════ */
 .table-wrap {
-  background: var(--white); border-radius: var(--r-lg); overflow: hidden;
+  background: var(--white); border-radius: var(--r-lg);
   border: 1px solid rgba(229,214,196,0.3); box-shadow: var(--shadow-sm);
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
 }
 .table-wrap table { width: 100%; border-collapse: collapse; }
 .table-wrap th {
-  text-align: left; padding: 14px 18px; font-size: 0.72rem; font-weight: 700;
-  letter-spacing: 0.1em; text-transform: uppercase; color: var(--bark-mid);
+  text-align: left; padding: 10px 10px; font-size: 0.62rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--bark-mid);
   background: var(--sand-light); border-bottom: 2px solid var(--sand);
+  white-space: nowrap;
 }
 .table-wrap td {
-  padding: 14px 18px; font-size: 0.88rem; border-bottom: 1px solid rgba(229,214,196,0.2);
-  color: var(--text-body); vertical-align: top;
+  padding: 10px 10px; font-size: 0.78rem; border-bottom: 1px solid rgba(229,214,196,0.15);
+  color: var(--text-body); vertical-align: middle;
 }
-.table-wrap tr:hover td { background: rgba(229,214,196,0.08); }
+.table-wrap tr:hover td { background: rgba(229,214,196,0.06); }
 
 /* Status Badges */
 .status {
-  display: inline-block; padding: 4px 14px; border-radius: var(--r-full);
-  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  display: inline-block; padding: 3px 10px; border-radius: var(--r-full);
+  font-size: 0.62rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
 }
 .status-pending { background: #fff3cd; color: #856404; }
 .status-confirmed { background: #d4edda; color: #155724; }
@@ -99,17 +102,25 @@ body { background: var(--ivory); }
 .status-delivered { background: #d1e7dd; color: #0f5132; }
 .status-cancelled { background: #f8d7da; color: #721c24; }
 
-/* Actions */
+/* Action controls */
 .action-select {
-  padding: 6px 10px; border: 1px solid var(--sand); border-radius: var(--r-sm);
-  font-size: 0.8rem; background: var(--white); color: var(--text-dark);
-  cursor: pointer;
+  padding: 4px 6px; border: 1px solid var(--sand); border-radius: 6px;
+  font-size: 0.7rem; background: var(--white); color: var(--text-dark); cursor: pointer;
+}
+.action-row {
+  display: flex; align-items: center; gap: 5px; flex-wrap: nowrap;
 }
 .btn-del {
-  background: #f8d7da; color: #721c24; padding: 6px 14px; border-radius: var(--r-sm);
-  font-size: 0.75rem; font-weight: 600; transition: var(--ease); margin-left: 6px;
+  background: #f8d7da; color: #721c24; padding: 4px 8px; border-radius: 6px;
+  font-size: 0.68rem; font-weight: 700; transition: var(--ease); line-height: 1;
 }
 .btn-del:hover { background: #f5c6cb; }
+.btn-sm {
+  padding: 4px 8px; border-radius: 6px; font-size: 0.68rem; font-weight: 600;
+  transition: var(--ease); display: inline-flex; align-items: center; gap: 3px;
+  background: var(--sand-light); color: var(--bark);
+}
+.btn-sm:hover { background: var(--sand); }
 
 /* Contact Cards */
 .contacts-list { display: flex; flex-direction: column; gap: 14px; }
@@ -135,10 +146,9 @@ body { background: var(--ivory); }
 
 @media (max-width: 768px) {
   .stats-grid { grid-template-columns: 1fr 1fr; }
-  .dash-content { padding: 24px 16px; }
-  .dash-header { padding: 16px 20px; }
-  .table-wrap { overflow-x: auto; }
-  .table-wrap table { min-width: 700px; }
+  .dash-content { padding: 16px 10px; }
+  .dash-header { padding: 10px 16px; }
+  .dash-header img { height: 60px; transform: scale(1); }
   .login-card { padding: 36px 28px; }
 }
 </style>
@@ -167,14 +177,14 @@ body { background: var(--ivory); }
   <div class="dash-header">
     <img src="/images/ayufresh_logo.png" alt="Ayufresh">
     <div class="dash-header-right">
-      <span style="color:var(--bark);font-size:1 rem;">Admin Dashboard</span>
+      <span style="color:var(--bark);font-size:1rem;">Admin Dashboard</span>
       <button class="btn-logout" onclick="logout()">Logout</button>
     </div>
   </div>
 
   <div class="dash-content">
     <!-- Stats -->
-    <div class="stats-grid" id="statsGrid">
+    <div class="stats-grid">
       <div class="stat-card"><div class="stat-label">Total Orders</div><div class="stat-value" id="statOrders">0</div></div>
       <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value" id="statRevenue">₹0</div></div>
       <div class="stat-card"><div class="stat-label">Pending</div><div class="stat-value" id="statPending">0</div></div>
@@ -183,8 +193,8 @@ body { background: var(--ivory); }
 
     <!-- Tabs -->
     <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('orders',event)">Orders</button>
-      <button class="tab-btn" onclick="switchTab('contacts')">Messages</button>
+      <button class="tab-btn active" onclick="switchTab('orders', event)">Orders</button>
+      <button class="tab-btn" onclick="switchTab('contacts', event)">Messages</button>
     </div>
 
     <!-- Orders Tab -->
@@ -192,13 +202,15 @@ body { background: var(--ivory); }
       <div class="table-wrap">
         <table>
           <thead><tr>
-            <th>Order ID</th><th>Customer</th><th>Phone</th><th>Address</th>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Phone</th>
+            <th>Address</th>
             <th>Qty</th>
             <th>Total</th>
             <th>Payment</th>
             <th>Status</th>
             <th>Date</th>
-            <th>Delivery</th> <!-- 🔥 NEW -->
             <th>Actions</th>
           </tr></thead>
           <tbody id="ordersBody"></tbody>
@@ -235,8 +247,8 @@ async function doLogin(e) {
     });
     const json = await res.json();
     if (json.success) {
-      sessionStorage.setItem('ayufresh_admin', json.token);
-      token = json.token;
+      sessionStorage.setItem('ayufresh_admin', json.token || 'admin');
+      token = json.token || 'admin';
       showDashboard();
     } else {
       document.getElementById('loginError').style.display = 'block';
@@ -259,68 +271,75 @@ function showDashboard() {
 }
 
 async function loadStats() {
-  const res = await fetch('/api/admin/stats');
-  const s = await res.json();
-  document.getElementById('statOrders').textContent = s.totalOrders;
-  document.getElementById('statRevenue').textContent = '₹' + s.totalRevenue.toLocaleString('en-IN');
-  document.getElementById('statPending').textContent = s.pendingOrders;
-  document.getElementById('statContacts').textContent = s.unreadContacts;
+  try {
+    const res = await fetch('/api/admin/stats');
+    const s = await res.json();
+    document.getElementById('statOrders').textContent = s.totalOrders;
+    document.getElementById('statRevenue').textContent = '₹' + s.totalRevenue.toLocaleString('en-IN');
+    document.getElementById('statPending').textContent = s.pendingOrders;
+    document.getElementById('statContacts').textContent = s.unreadContacts;
+  } catch (err) {
+    console.error('Failed to load stats:', err);
+  }
 }
 
 async function loadOrders() {
-  const res = await fetch('/api/admin/orders');
-  const orders = await res.json();
-  const tbody = document.getElementById('ordersBody');
-  if (!orders.length) {
-    tbody.innerHTML = '';
-    document.getElementById('ordersEmpty').style.display = 'block';
-    return;
+  try {
+    const res = await fetch('/api/admin/orders');
+    const orders = await res.json();
+    const tbody = document.getElementById('ordersBody');
+    if (!orders.length) {
+      tbody.innerHTML = '';
+      document.getElementById('ordersEmpty').style.display = 'block';
+      return;
+    }
+    document.getElementById('ordersEmpty').style.display = 'none';
+    tbody.innerHTML = orders.map(o => `
+      <tr>
+        <td><strong style="font-size:0.72rem;">${o.order_id}</strong></td>
+        <td style="white-space:normal;min-width:110px;">
+          ${o.name}<br>
+          <small style="color:var(--text-light);font-size:0.68rem;">${o.email}</small>
+        </td>
+        <td>${o.phone}</td>
+        <td style="white-space:normal;max-width:160px;font-size:0.72rem;">
+          ${o.address}, ${o.city}, ${o.state} - ${o.pin}
+        </td>
+        <td style="text-align:center;">${o.quantity}</td>
+        <td><strong>₹${o.total.toLocaleString('en-IN')}</strong></td>
+        <td>
+          ${o.payment.toUpperCase()}<br>
+          <small style="color:${o.payment_status === 'paid' ? '#155724' : '#b04040'};font-weight:600;font-size:0.65rem;">
+            ${o.payment_status || 'pending'}
+          </small>
+        </td>
+        <td><span class="status status-${o.status}">${o.status}</span></td>
+        <td style="font-size:0.7rem;color:var(--text-light);white-space:nowrap;">
+          ${new Date(o.created_at).toLocaleDateString('en-IN')}
+        </td>
+        <td>
+          <div class="action-row">
+            <select class="action-select" onchange="updateOrder(${o.id}, this.value)" title="Status">
+              <option value="pending" ${o.status==='pending'?'selected':''}>Pending</option>
+              <option value="confirmed" ${o.status==='confirmed'?'selected':''}>Confirmed</option>
+              <option value="shipped" ${o.status==='shipped'?'selected':''}>Shipped</option>
+              <option value="delivered" ${o.status==='delivered'?'selected':''}>Delivered</option>
+              <option value="cancelled" ${o.status==='cancelled'?'selected':''}>Cancelled</option>
+            </select>
+            <select class="action-select" onchange="assignDelivery(${o.id}, this.value)" title="Delivery Partner">
+              <option value="">🚚</option>
+              <option value="Ramesh" ${o.delivery_partner==="Ramesh"?"selected":""}>Ramesh</option>
+              <option value="Suresh" ${o.delivery_partner==="Suresh"?"selected":""}>Suresh</option>
+            </select>
+            <a href="/api/invoice/${o.order_id}" target="_blank" class="btn-sm" title="Invoice">📄</a>
+            <button class="btn-del" onclick="deleteOrder(${o.id})" title="Delete">✕</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  } catch (err) {
+    console.error('Failed to load orders:', err);
   }
-  document.getElementById('ordersEmpty').style.display = 'none';
-  tbody.innerHTML = orders.map(o => `
-    <tr>
-      <td><strong>${o.order_id}</strong></td>
-      <td>${o.name}<br><small style="color:var(--text-light)">${o.email}</small></td>
-      <td>${o.phone}</td>
-      <td style="max-width:180px;font-size:0.82rem;">${o.address}, ${o.city}, ${o.state} - ${o.pin}</td>
-      <td>${o.quantity}</td>
-      <td><strong>₹${o.total.toLocaleString('en-IN')}</strong></td>
-     <td>${o.payment.toUpperCase()} <br>
-        <small style="color:${o.payment_status === 'paid' ? 'green' : 'red'}">
-          ${o.payment_status}
-        </small>
-      </td>
-      <td><span class="status status-${o.status}">${o.status}</span></td>
-      <td style="font-size:0.78rem;color:var(--text-light);">
-        ${new Date(o.created_at).toLocaleDateString('en-IN')}
-      </td>
-
-      <!-- 🔥 DELIVERY ASSIGN -->
-      <td>
-        <select class="action-select" onchange="assignDelivery(${o.id}, this.value)">
-          <option value="">Assign</option>
-          <option value="Ramesh" ${o.delivery_partner==="Ramesh"?"selected":""}>Ramesh</option>
-          <option value="Suresh" ${o.delivery_partner==="Suresh"?"selected":""}>Suresh</option>
-        </select>
-      </td>
-
-      <td>
-        <!-- 🔥 INVOICE -->
-        <a href="/api/invoice/${o.order_id}" target="_blank">📄 Invoice</a>
-
-        <br><br>
-      <td>
-        <select class="action-select" onchange="updateOrder(${o.id}, this.value)">
-          <option value="pending" ${o.status==='pending'?'selected':''}>Pending</option>
-          <option value="confirmed" ${o.status==='confirmed'?'selected':''}>Confirmed</option>
-          <option value="shipped" ${o.status==='shipped'?'selected':''}>Shipped</option>
-          <option value="delivered" ${o.status==='delivered'?'selected':''}>Delivered</option>
-          <option value="cancelled" ${o.status==='cancelled'?'selected':''}>Cancelled</option>
-        </select>
-        <button class="btn-del" onclick="deleteOrder(${o.id})">Delete</button>
-      </td>
-    </tr>
-  `).join('');
 }
 
 async function updateOrder(id, status) {
@@ -338,26 +357,30 @@ async function deleteOrder(id) {
 }
 
 async function loadContacts() {
-  const res = await fetch('/api/admin/contacts');
-  const contacts = await res.json();
-  const list = document.getElementById('contactsList');
-  if (!contacts.length) {
-    list.innerHTML = '';
-    document.getElementById('contactsEmpty').style.display = 'block';
-    return;
-  }
-  document.getElementById('contactsEmpty').style.display = 'none';
-  list.innerHTML = contacts.map(c => `
-    <div class="contact-card ${c.read ? '' : 'unread'}">
-      <div class="contact-card-header">
-        <h4>${c.name}</h4>
-        <small>${new Date(c.created_at).toLocaleString('en-IN')}</small>
+  try {
+    const res = await fetch('/api/admin/contacts');
+    const contacts = await res.json();
+    const list = document.getElementById('contactsList');
+    if (!contacts.length) {
+      list.innerHTML = '';
+      document.getElementById('contactsEmpty').style.display = 'block';
+      return;
+    }
+    document.getElementById('contactsEmpty').style.display = 'none';
+    list.innerHTML = contacts.map(c => `
+      <div class="contact-card ${c.read ? '' : 'unread'}">
+        <div class="contact-card-header">
+          <h4>${c.name}</h4>
+          <small>${new Date(c.created_at).toLocaleString('en-IN')}</small>
+        </div>
+        <div class="contact-meta">${c.email} ${c.phone ? '· ' + c.phone : ''} · ${c.subject || ''}</div>
+        <div class="contact-msg">${c.message}</div>
+        ${!c.read ? `<button class="btn-mark-read" onclick="markRead(${c.id})">Mark as Read</button>` : ''}
       </div>
-      <div class="contact-meta">${c.email} ${c.phone ? '· ' + c.phone : ''} · ${c.subject}</div>
-      <div class="contact-msg">${c.message}</div>
-      ${!c.read ? `<button class="btn-mark-read" onclick="markRead(${c.id})">Mark as Read</button>` : ''}
-    </div>
-  `).join('');
+    `).join('');
+  } catch (err) {
+    console.error('Failed to load contacts:', err);
+  }
 }
 
 async function markRead(id) {
@@ -365,35 +388,20 @@ async function markRead(id) {
   loadContacts(); loadStats();
 }
 
-function switchTab(tab) {
+function switchTab(tab, e) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  event.target.classList.add('active');
+  if (e && e.target) e.target.classList.add('active');
   document.getElementById('tab-' + tab).classList.add('active');
-
 }
 
-// new function change
-function copyId(id) {
-  navigator.clipboard.writeText(id);
-  alert("Order ID copied");
-}
-
-function openTrack(id) {
-  window.open(`/track.html?id=${id}`, '_blank');
-
-}
-
-// 🔥 Assign delivery partner
 async function assignDelivery(id, name) {
   if (!name) return;
-
   await fetch(`/api/admin/orders/${id}`, {
     method: 'PATCH',
     headers: {'Content-Type':'application/json'},
     body: JSON.stringify({ delivery_partner: name })
   });
-
   alert("Assigned to " + name);
   loadOrders();
 }

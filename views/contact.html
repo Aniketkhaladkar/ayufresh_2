@@ -22,7 +22,7 @@
   display: grid; grid-template-columns: 1fr 1.2fr; gap: 64px;
 }
 .contact-info h2 { font-size: 2rem; margin-bottom: 20px; }
-.contact-info > p { color: var(--text-light); margin-bottom: 44px; line-height: 1.85; }
+.contact-info > p { color: var(--bark); margin-bottom: 44px; line-height: 1.85; }
 .c-detail { display: flex; gap: 16px; margin-bottom: 30px; align-items: flex-start; }
 .c-icon {
   width: 50px; height: 50px; border-radius: 50%; flex-shrink: 0;
@@ -66,13 +66,13 @@
   <a href="/" class="nav-logo"><img src="/images/ayufresh_logo.png" alt="Ayufresh"></a>
   <div class="nav-links">
     <a href="/">Home</a><a href="/about">About</a><a href="/contact">Contact</a>
-    <a href="/order" style="color: rgb(255, 255, 255)" class="nav-cta">Order Now</a>
+    <a href="/order" class="nav-cta" style="color: rgb(255, 255, 255);">Order Now</a>
   </div>
   <div class="hamburger" id="hamburger" onclick="toggleMobile()"><span></span><span></span><span></span></div>
 </nav>
 <div class="mobile-menu" id="mobileMenu">
   <a href="/" onclick="closeMobile()">Home</a><a href="/about" onclick="closeMobile()">About</a>
-  <a href="/contact" onclick="closeMobile()">Contact</a><a href="/order" style="color: rgb(255, 255, 255)"onclick="closeMobile()">Order Now</a>
+  <a href="/contact" onclick="closeMobile()">Contact</a><a href="/order" onclick="closeMobile()">Order Now</a>
 </div>
 
 <section class="contact-hero">
@@ -85,9 +85,8 @@
     <h2>Let's Connect</h2>
     <p>Whether you have a product question, want to become a distributor, or just want to say hello — reach out anytime.</p>
     <div class="c-detail"><div class="c-icon">📍</div><div><h4>Location</h4><p>Pune, Maharashtra, India</p></div></div>
-    <div class="c-detail"><div class="c-icon">📧</div><div><h4>Email</h4><p>contact@ayufresh.in</p></div></div>
+    <div class="c-detail"><div class="c-icon">📧</div><div><h4>Email</h4><p>ayufresh6@gmail.com</p></div></div>
     <div class="c-detail"><div class="c-icon">📱</div><div><h4>WhatsApp</h4><p>+91 98819 94473</p></div></div>
-    <!-- <div class="c-detail"><div class="c-icon">🕐</div><div><h4>Hours</h4><p>Mon – Sat: 9:00 AM – 7:00 PM IST</p></div></div> -->
   </div>
 
   <div class="contact-form-card reveal-right">
@@ -118,7 +117,8 @@
   <div class="footer-inner">
     <div class="footer-brand"><img src="/images/ayufresh_logo.png" alt="Ayufresh"><p>Ayufresh Botanical Oral Care — natural herbal mouth protector. Made in Pune, Maharashtra.</p></div>
     <div class="footer-col"><h4>Pages</h4><a href="/">Home</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/order">Order</a></div>
-    <div class="footer-col"><h4>Product</h4><a href="/#benefits">Benefits</a><a href="/#benefits">Ingredients</a></div>
+    <div class="footer-col"><h4>Product</h4><a href="/#benefits">Benefits</a><a href="/#benefits">Ingredients</a><a href="/#benefits">How to Use</a></div>
+    <div class="footer-col"><h4>Legal</h4><a href="/terms-and-conditions">Terms & Conditions</a><a href="/privacy-policy">Privacy Policy</a><a href="/shipping-policy">Shipping Policy</a><a href="/refund-and-cancellation">Refund & Cancellation</a></div>
     <div class="footer-col"><h4>Connect</h4><a href="#">Instagram</a><a href="#">WhatsApp</a><a href="#">Facebook</a></div>
   </div>
   <div class="footer-bottom">© 2026 Ayufresh. All rights reserved.</div>

@@ -105,14 +105,6 @@
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 .toast.error { background: #a04040; color: #fff; }
 
-/* Free shipping bar */
-.free-ship {
-  background: linear-gradient(90deg, var(--sand-light), var(--sand));
-  padding: 10px 24px; border-radius: var(--r-sm); margin-bottom: 28px;
-  text-align: center; font-size: 0.82rem; font-weight: 600; color: var(--bark);
-  letter-spacing: 0.04em;
-}
-
 @media (max-width: 768px) {
   .order-hero { padding: 140px 24px 70px; }
   .order-content { grid-template-columns: 1fr; padding: 60px 24px; gap: 40px; }
@@ -153,14 +145,12 @@
     <div class="product-badges">
       <span class="p-badge">🌿 100% Organic</span>
       <span class="p-badge">🇮🇳 Made in India</span>
-      <!-- <span class="p-badge">🚚 Free Shipping</span> -->
     </div>
   </div>
 
   <div class="order-form-card reveal-right">
     <h2>Place Your Order</h2>
     <p>Free shipping across India. Pay on delivery available.</p>
-    <!-- <div class="free-ship">🚚 FREE DELIVERY — All India Shipping Included</div> -->
     <form id="orderForm">
       <div class="form-row">
         <div class="form-group"><label>Full Name *</label><input type="text" name="name" placeholder="Your full name" required></div>
@@ -181,7 +171,11 @@
             <span class="qty-val" id="qtyVal">1</span>
             <button type="button" class="qty-btn" onclick="changeQty(1)">+</button>
           </div>
-          <div class="price-breakdown"><div>Product Total: ₹<span id="productTotal">249</span></div><div>Delivery Charges: ₹<span id="deliveryDisplay">70</span></div><div><strong>Total: ₹<span id="totalDisplay">319</span></strong></div></div>
+          <div class="price-breakdown">
+            <div>Product Total: ₹<span id="productTotal">249</span></div>
+            <div>Delivery Charges: ₹<span id="deliveryDisplay">70</span></div>
+            <div><strong>Total: ₹<span id="totalDisplay">319</span></strong></div>
+          </div>
         </div>
         <input type="hidden" name="quantity" id="qtyInput" value="1">
       </div>
@@ -192,7 +186,7 @@
           <option value="bank">Bank Transfer</option>
         </select>
       </div>
-      <button type="submit" class="btn-order" id="orderBtn">Place Order — ₹<span id="btnTotal">249</span></button>
+      <button type="submit" class="btn-order" id="orderBtn">Place Order — ₹<span id="btnTotal">319</span></button>
     </form>
   </div>
 </div>
@@ -203,15 +197,14 @@
   <div class="footer-inner">
     <div class="footer-brand"><img src="/images/ayufresh_logo.png" alt="Ayufresh"><p>Ayufresh Botanical Oral Care. Made in Pune, Maharashtra.</p></div>
     <div class="footer-col"><h4>Pages</h4><a href="/">Home</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/order">Order</a></div>
-    <div class="footer-col"><h4>Product</h4><a href="/#benefits">Benefits</a><a href="/#benefits">Ingredients</a></div>
+    <div class="footer-col"><h4>Product</h4><a href="/#benefits">Benefits</a><a href="/#benefits">Ingredients</a><a href="/#benefits">How to Use</a></div>
+    <div class="footer-col"><h4>Legal</h4><a href="/terms-and-conditions">Terms & Conditions</a><a href="/privacy-policy">Privacy Policy</a><a href="/shipping-policy">Shipping Policy</a><a href="/refund-and-cancellation">Refund & Cancellation</a></div>
     <div class="footer-col"><h4>Connect</h4><a href="#">Instagram</a><a href="#">WhatsApp</a><a href="#">Facebook</a></div>
   </div>
   <div class="footer-bottom">© 2026 Ayufresh. All rights reserved.</div>
 </footer>
 
 <script src="/js/main.js"></script>
-<!-- ONLY SCRIPT PART CHANGED — your design untouched -->
-
 <script>
 const PRICE = 249;
 let DELIVERY = 70;
@@ -223,23 +216,22 @@ function changeQty(d) {
   document.getElementById('qtyVal').textContent = qty;
   document.getElementById('qtyInput').value = qty;
 
-  // 🔥 FIX — offer logic
+  // Offer logic: Buy 2 @ ₹399
   let productTotal = (qty === 2) ? 399 : qty * PRICE;
 
-  // 🔥 FIX — dynamic delivery
+  // Dynamic delivery based on state
   const state = document.querySelector('[name="state"]').value;
   DELIVERY = (state === "Maharashtra") ? 50 : 70;
 
   const finalTotal = productTotal + DELIVERY;
 
-  // 🔥 FIX — update UI properly
   document.getElementById('productTotal').textContent = productTotal;
   document.getElementById('totalDisplay').textContent = finalTotal;
   document.getElementById('btnTotal').textContent = finalTotal;
   document.getElementById('deliveryDisplay').textContent = DELIVERY;
 }
 
-// 🔥 FIX — update when state changes
+// Update when state changes
 document.querySelector('[name="state"]').addEventListener('input', () => {
   changeQty(0);
 });
@@ -255,8 +247,6 @@ document.getElementById('orderForm').addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const btn = document.getElementById('orderBtn');
-
-  // 🔥 FIX — prevent multiple clicks
   if (btn.disabled) return;
 
   btn.textContent = 'Processing...';
@@ -264,18 +254,15 @@ document.getElementById('orderForm').addEventListener('submit', async (e) => {
 
   const fd = new FormData(e.target);
   const data = Object.fromEntries(fd);
-
   data.quantity = qty;
 
-  // 🔥 FIX — calculate total
   let productTotal = (qty === 2) ? 399 : qty * PRICE;
   const state = data.state || "Maharashtra";
   const delivery = (state === "Maharashtra") ? 50 : 70;
   const finalTotal = productTotal + delivery;
 
   try {
-
-    // 🔥 FIX — COD FLOW
+    // COD Flow
     if (data.payment === "cod") {
       const res = await fetch('/api/orders', {
         method: 'POST',
@@ -291,8 +278,7 @@ document.getElementById('orderForm').addEventListener('submit', async (e) => {
         showToast("Order failed", true);
       }
     }
-
-    // 🔥 FIX — ONLINE PAYMENT
+    // Online Payment Flow
     else {
       const payRes = await fetch('/api/create-payment', {
         method: 'POST',
@@ -303,7 +289,7 @@ document.getElementById('orderForm').addEventListener('submit', async (e) => {
       const order = await payRes.json();
 
       const options = {
-        key: "rzp_test_xxxxxxxxx", // 🔥 FIX — replace with your real key
+        key: "rzp_test_xxxxxxxxx",
         amount: order.amount,
         currency: "INR",
         name: "Ayufresh",
@@ -320,7 +306,6 @@ document.getElementById('orderForm').addEventListener('submit', async (e) => {
           window.location.href = `/order-success?id=${json2.order_id}&total=${json2.total}`;
         },
 
-        // 🔥 FIX — handle cancel
         modal: {
           ondismiss: function () {
             showToast("Payment cancelled");
@@ -336,12 +321,11 @@ document.getElementById('orderForm').addEventListener('submit', async (e) => {
     showToast('⚠️ Error placing order', true);
   }
 
-  // 🔥 FIX — reset button correctly
   btn.textContent = "Place Order — ₹" + finalTotal;
   btn.disabled = false;
 });
 
-// 🔥 FIX — initial load calculation
+// Initial load calculation
 changeQty(0);
 </script>
 

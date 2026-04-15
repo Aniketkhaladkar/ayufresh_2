@@ -84,27 +84,6 @@
 }
 .hero-stat-label { font-size: 0.75rem; color: rgb(255, 255, 255); text-transform: uppercase; letter-spacing: 0.1em; }
 
-/* ── Scroll Indicator ── */
-.scroll-indicator {
-  position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
-  display: flex; flex-direction: column; align-items: center; gap: 10px;
-  color: rgba(229,214,196,0.35); z-index: 2; animation: fadeIn 1s ease 1.5s both;
-}
-.scroll-indicator span { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.18em; }
-.scroll-mouse {
-  width: 22px; height: 36px; border: 2px solid rgba(229,214,196,0.2);
-  border-radius: 11px; position: relative;
-}
-.scroll-mouse::before {
-  content: ''; position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
-  width: 3px; height: 7px; background: var(--sand); border-radius: 3px;
-  animation: scrollDot 2s ease infinite;
-}
-@keyframes scrollDot {
-  0%,100% { transform: translateX(-50%) translateY(0); opacity: 1; }
-  100% { transform: translateX(-50%) translateY(14px); opacity: 0; }
-}
-
 /* ── Marquee ── */
 .marquee { background: var(--bark); padding: 16px 0; overflow: hidden; }
 .marquee-track { display: flex; gap: 56px; animation: marquee 28s linear infinite; width: max-content; }
@@ -156,7 +135,7 @@
 }
 .ingredient-card:hover { transform: translateY(-6px) scale(1.02); box-shadow: var(--shadow-md); }
 .ingredient-emoji { font-size: 2.4rem; margin-bottom: 14px; display: block; }
-.ingredient-card h4 { font-size: 1.05rem;margin-top: 15px; margin-bottom: 4px; }
+.ingredient-card h4 { font-size: 1.05rem; margin-top: 15px; margin-bottom: 4px; }
 .ingredient-card .latin { font-style: italic; font-size: 0.8rem; color: var(--bark-mid); margin-bottom: 10px; }
 .ingredient-card p { font-size: 0.86rem; color: var(--bark); line-height: 1.65; }
 
@@ -223,6 +202,21 @@
 .cta-banner h2 { font-size: clamp(1.8rem, 3vw, 2.8rem); color: var(--bark); margin-bottom: 14px; position: relative; z-index: 1; }
 .cta-banner p { color: var(--bark-light); font-size: 1.05rem; margin-bottom: 32px; position: relative; z-index: 1; }
 
+/* ── Offer Button ── */
+.btn-offer {
+  display: inline-block; padding: 14px 28px; font-size: 1rem; font-weight: 700;
+  border-radius: 30px; text-transform: uppercase; letter-spacing: 0.06em;
+  background: linear-gradient(135deg, #ff9800, #ff5722); color: #fff;
+  box-shadow: 0 8px 20px rgba(255, 87, 34, 0.4); transition: var(--ease);
+  animation: pulseOffer 1.5s infinite;
+}
+.btn-offer:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 12px 30px rgba(255, 87, 34, 0.6); }
+@keyframes pulseOffer {
+  0% { box-shadow: 0 0 0 0 rgba(255, 87, 34, 0.6); }
+  70% { box-shadow: 0 0 0 12px rgba(255, 87, 34, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 87, 34, 0); }
+}
+
 /* ── Responsive ── */
 @media (max-width: 1024px) {
   .hero-content { grid-template-columns: 1fr; text-align: center; }
@@ -241,72 +235,10 @@
   .benefits-grid, .testimonials-grid { grid-template-columns: 1fr; }
   .step-arrow { display: none; }
   .cta-banner { padding: 60px 24px; }
+  .ingredients-grid { grid-template-columns: repeat(2, 1fr); }
 }
-/* for ingredient section */
-@media (max-width: 768px) {
-  .ingredients-grid {
-    grid-template-columns: repeat(2, 1fr); /* tablet */
-  }
-}
-
 @media (max-width: 480px) {
-  .ingredients-grid {
-    grid-template-columns: 1fr; /* mobile */
-  }
-}
-
-/* offer css */
-.hero-offer {
-  margin-bottom: 18px;
-  display: inline-block;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #2e7d32;
-  background: #e8f5e9;
-  padding: 8px 16px;
-  border-radius: 25px;
-  letter-spacing: 0.05em;
-}
-.cta-offer {
-  margin-bottom: 16px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--bark);
-  background: rgba(255,255,255,0.4);
-  display: inline-block;
-  padding: 6px 14px;
-  border-radius: 20px;
-}
-.btn-offer {
-  display: inline-block;
-  padding: 14px 28px;
-  font-size: 1rem;
-  font-weight: 700;
-  border-radius: 30px;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  text-decoration: none;
-
-  /* Highlight look */
-  background: linear-gradient(135deg, #ff9800, #ff5722);
-  color: #fff;
-
-  box-shadow: 0 8px 20px rgba(255, 87, 34, 0.4);
-  transition: var(--ease);
-  animation: pulseOffer 1.5s infinite;
-}
-
-/* Hover effect */
-.btn-offer:hover {
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 12px 30px rgba(255, 87, 34, 0.6);
-}
-
-/* Glow animation */
-@keyframes pulseOffer {
-  0% { box-shadow: 0 0 0 0 rgba(255, 87, 34, 0.6); }
-  70% { box-shadow: 0 0 0 12px rgba(255, 87, 34, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(255, 87, 34, 0); }
+  .ingredients-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -314,7 +246,7 @@
 
 <!-- NAV -->
 <nav class="navbar" id="navbar">
-  <a href="/" class="nav-logo"><img src="/images/ayufresh_logo.png" alt="Ayufresh" ;"></a>
+  <a href="/" class="nav-logo"><img src="/images/ayufresh_logo.png" alt="Ayufresh"></a>
   <div class="nav-links">
     <a href="/">Home</a>
     <a href="/about">About</a>
@@ -358,7 +290,6 @@
       </div>
     </div>
   </div>
-  
 </section>
 
 <!-- MARQUEE -->
@@ -399,12 +330,12 @@
     <h2 class="section-title reveal">Crafted by Nature,<br>Backed by Ayurveda</h2>
     <p class="section-subtitle reveal">Every ingredient is purposefully chosen for its proven oral health benefits.</p>
     <div class="ingredients-grid">
-      <div class="ingredient-card reveal"><div class="ingredient-img-wrap"> <img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Cloves.JPG&width=500"alt="Clove extract"></div><h4>Clove Extract</h4><p class="latin">Syzygium aromaticum</p><p>Natural analgesic that numbs pain and fights bacteria.</p></div>
-      <div class="ingredient-card reveal"><div class="ingredient-img-wrap"> <img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Neem_leaves.JPG&width=500"alt="Neem Leaft"></div><h4>Neem Leaf</h4><p class="latin">Azadirachta indica</p><p>Ultimate anti-bacterial herb for Indian oral care.</p></div>
-      <div class="ingredient-card reveal"><div class="ingredient-img-wrap"> <img src="images/Custard Apple.jpg"alt="Custard Apple Leaf"></div><h4>Custard Apple Leaf</h4><p class="latin">Annona squamosa</p><p>Antioxidants that soothe and heal gum tissue.</p></div>
-      <div class="ingredient-card reveal"><div class="ingredient-img-wrap"> <img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Potassium_alum_octahedral_crystal.jpg&width=500"alt="Potassium Alum"></div><h4>Potassium Alum</h4><p class="latin">Aluminum Sulfate</p><p>Natural astringent that tightens and purifies gums.</p></div>
-      <div class="ingredient-card reveal"><div class="ingredient-img-wrap"> <img src="images/Rock Salt.jpg"alt="Rock Salt"></div><h4>Rock Salt</h4><p class="latin">Sendha Namak</p><p>Mineral-rich salt that cleanses and remineralizes.</p></div>
-      <div class="ingredient-card reveal"><div class="ingredient-img-wrap"> <img src="images/water.jpg"alt="Purified Water"></div><h4>Purified Water</h4><p class="latin">Aqua Purificata</p><p>Ultra-pure base for effective ingredient delivery.</p></div>
+      <div class="ingredient-card reveal"><div class="ingredient-img-wrap"><img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Cloves.JPG&width=500" alt="Clove extract"></div><h4>Clove Extract</h4><p class="latin">Syzygium aromaticum</p><p>Natural analgesic that numbs pain and fights bacteria.</p></div>
+      <div class="ingredient-card reveal"><div class="ingredient-img-wrap"><img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Neem_leaves.JPG&width=500" alt="Neem Leaf"></div><h4>Neem Leaf</h4><p class="latin">Azadirachta indica</p><p>Ultimate anti-bacterial herb for Indian oral care.</p></div>
+      <div class="ingredient-card reveal"><div class="ingredient-img-wrap"><img src="images/Custard Apple.jpg" alt="Custard Apple Leaf"></div><h4>Custard Apple Leaf</h4><p class="latin">Annona squamosa</p><p>Antioxidants that soothe and heal gum tissue.</p></div>
+      <div class="ingredient-card reveal"><div class="ingredient-img-wrap"><img src="https://commons.wikimedia.org/w/index.php?title=Special:Redirect/file/Potassium_alum_octahedral_crystal.jpg&width=500" alt="Potassium Alum"></div><h4>Potassium Alum</h4><p class="latin">Aluminum Sulfate</p><p>Natural astringent that tightens and purifies gums.</p></div>
+      <div class="ingredient-card reveal"><div class="ingredient-img-wrap"><img src="images/Rock Salt.jpg" alt="Rock Salt"></div><h4>Rock Salt</h4><p class="latin">Sendha Namak</p><p>Mineral-rich salt that cleanses and remineralizes.</p></div>
+      <div class="ingredient-card reveal"><div class="ingredient-img-wrap"><img src="images/water.jpg" alt="Purified Water"></div><h4>Purified Water</h4><p class="latin">Aqua Purificata</p><p>Ultra-pure base for effective ingredient delivery.</p></div>
     </div>
   </div>
 </section>
@@ -452,10 +383,7 @@
 <section class="cta-banner">
   <h2 class="reveal">Ready to Switch to Natural?</h2>
   <p class="reveal">Join thousands who trust Ayurvedic oral care for their family.</p>
-  <a href="/order" class="btn-offer reveal">
-     Buy 2 @ ₹399
-  </a>
-
+  <a href="/order" class="btn-offer reveal"> Buy 2 @ ₹399</a>
   <a href="/order" class="btn-primary reveal"><span>Order Ayufresh — ₹249</span></a>
 </section>
 
@@ -463,8 +391,9 @@
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand"><img src="/images/ayufresh_logo.png" alt="Ayufresh"><p>Ayufresh Botanical Oral Care — natural herbal mouth protector with traditional Ayurvedic ingredients. Made in Pune, Maharashtra.</p></div>
-    <div class="footer-col"><h4>Pages</h4><a href="/">Home</a><a href="/about">About Us</a><a href="/contact">Contact</a><a href="/order">Order</a></div>
+    <div class="footer-col"><h4>Pages</h4><a href="/">Home</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/order">Order</a></div>
     <div class="footer-col"><h4>Product</h4><a href="/#benefits">Benefits</a><a href="/#benefits">Ingredients</a><a href="/#benefits">How to Use</a></div>
+    <div class="footer-col"><h4>Legal</h4><a href="/terms-and-conditions">Terms & Conditions</a><a href="/privacy-policy">Privacy Policy</a><a href="/shipping-policy">Shipping Policy</a><a href="/refund-and-cancellation">Refund & Cancellation</a></div>
     <div class="footer-col"><h4>Connect</h4><a href="#">Instagram</a><a href="#">WhatsApp</a><a href="#">Facebook</a></div>
   </div>
   <div class="footer-bottom">© 2026 Ayufresh. All rights reserved. Pune, Maharashtra, India.</div>

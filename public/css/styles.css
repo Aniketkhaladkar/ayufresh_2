@@ -277,7 +277,7 @@ input, textarea, select { font-family: inherit; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
 /* ============================================
-   FOOTER
+   FOOTER — UPDATED: 5 columns for Legal
    ============================================ */
 .footer {
   background: var(--bark); padding: 64px 48px 28px; position: relative; overflow: hidden;
@@ -289,7 +289,7 @@ input, textarea, select { font-family: inherit; }
 }
 .footer-inner {
   max-width: 1260px; margin: 0 auto;
-  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px;
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 36px;
 }
 .footer-brand img { height: 85px;border-radius: 10px; margin-bottom: 10px;background-color:#ffffff; }
 .footer-brand p { color: rgb(255, 255, 255); font-size: 0.88rem; line-height: 1.75; max-width: 280px; }

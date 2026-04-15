@@ -38,7 +38,7 @@
   background: radial-gradient(circle at 80% 20%, rgba(229,214,196,0.06) 0%, transparent 50%);
 }
 .mission h2 { color: var(--sand-light); font-size: 2rem; margin-bottom: 16px; position: relative; z-index: 1; }
-.mission p { color: rgba(229,214,196,0.55); font-size: 1.05rem; line-height: 1.85; max-width: 700px; position: relative; z-index: 1; }
+.mission p { color: rgb(255, 255, 255); font-size: 1.05rem; line-height: 1.85; max-width: 700px; position: relative; z-index: 1; }
 
 .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 50px; }
 .value-card {
@@ -48,7 +48,7 @@
 .value-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
 .value-icon { font-size: 2.6rem; margin-bottom: 18px; display: block; }
 .value-card h3 { font-size: 1.15rem; margin-bottom: 10px; }
-.value-card p { font-size: 0.9rem; color: var(--text-light); line-height: 1.75; }
+.value-card p { font-size: 0.9rem; color: var(--bark); line-height: 1.75; }
 
 .about-cta {
   margin-top: 80px; text-align: center; padding: 64px 48px;
@@ -73,13 +73,13 @@
   <a href="/" class="nav-logo"><img src="/images/ayufresh_logo.png" alt="Ayufresh"></a>
   <div class="nav-links">
     <a href="/">Home</a><a href="/about">About</a><a href="/contact">Contact</a>
-    <a href="/order" style="color: rgb(255, 255, 255)"" class="nav-cta">Order Now</a>
+    <a href="/order" class="nav-cta" style="color: rgb(255, 255, 255);">Order Now</a>
   </div>
   <div class="hamburger" id="hamburger" onclick="toggleMobile()"><span></span><span></span><span></span></div>
 </nav>
 <div class="mobile-menu" id="mobileMenu">
   <a href="/" onclick="closeMobile()">Home</a><a href="/about" onclick="closeMobile()">About</a>
-  <a href="/contact" onclick="closeMobile()">Contact</a><a href="/order" style="color: rgb(255, 255, 255)" onclick="closeMobile()">Order Now</a>
+  <a href="/contact" onclick="closeMobile()">Contact</a><a href="/order" onclick="closeMobile()">Order Now</a>
 </div>
 
 <section class="about-hero">
@@ -124,7 +124,8 @@
   <div class="footer-inner">
     <div class="footer-brand"><img src="/images/ayufresh_logo.png" alt="Ayufresh"><p>Ayufresh Botanical Oral Care — natural herbal mouth protector. Made in Pune, Maharashtra.</p></div>
     <div class="footer-col"><h4>Pages</h4><a href="/">Home</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/order">Order</a></div>
-    <div class="footer-col"><h4>Product</h4><a href="/#benefits">Benefits</a><a href="/#benefits">Ingredients</a></div>
+    <div class="footer-col"><h4>Product</h4><a href="/#benefits">Benefits</a><a href="/#benefits">Ingredients</a><a href="/#benefits">How to Use</a></div>
+    <div class="footer-col"><h4>Legal</h4><a href="/terms-and-conditions">Terms & Conditions</a><a href="/privacy-policy">Privacy Policy</a><a href="/shipping-policy">Shipping Policy</a><a href="/refund-and-cancellation">Refund & Cancellation</a></div>
     <div class="footer-col"><h4>Connect</h4><a href="#">Instagram</a><a href="#">WhatsApp</a><a href="#">Facebook</a></div>
   </div>
   <div class="footer-bottom">© 2026 Ayufresh. All rights reserved.</div>
