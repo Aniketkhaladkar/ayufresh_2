@@ -36,8 +36,35 @@ async function runSql(sql, params = []) {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// ══════ Root dir (works on both local & Vercel serverless) ══════
+const fs = require('fs');
+// On Vercel, __dirname may point to /var/task or /var/task/api — find where views/ actually lives
+let baseDir = __dirname;
+if (!fs.existsSync(path.join(baseDir, 'views')) && fs.existsSync(path.join(baseDir, '..', 'views'))) {
+  baseDir = path.resolve(baseDir, '..');
+}
+
+// ══════ Static (before page routes so JS/CSS/images load first) ══════
+const viewsDir = path.join(baseDir, 'views');
+app.use(express.static(path.join(baseDir, 'public')));
+app.use(express.static(viewsDir));
+
+// Debug route (remove after confirming deployment works)
+app.get('/api/debug-paths', (req, res) => {
+  const publicDir = path.join(baseDir, 'public');
+  res.json({
+    __dirname,
+    baseDir,
+    viewsDir,
+    publicDir,
+    viewsExists: fs.existsSync(viewsDir),
+    publicExists: fs.existsSync(publicDir),
+    publicJsExists: fs.existsSync(path.join(publicDir, 'js', 'main.js')),
+    publicCssExists: fs.existsSync(path.join(publicDir, 'css', 'styles.css')),
+  });
+});
+
 // ══════ PAGE ROUTES ══════
-const viewsDir = path.join(__dirname, 'views');
 app.get('/', (req, res) => res.sendFile(path.join(viewsDir, 'index.html')));
 app.get('/about', (req, res) => res.sendFile(path.join(viewsDir, 'about.html')));
 app.get('/contact', (req, res) => res.sendFile(path.join(viewsDir, 'contact.html')));
@@ -49,10 +76,6 @@ app.get('/privacy-policy', (req, res) => res.sendFile(path.join(viewsDir, 'priva
 app.get('/terms-and-conditions', (req, res) => res.sendFile(path.join(viewsDir, 'terms-and-conditions.html')));
 app.get('/shipping-policy', (req, res) => res.sendFile(path.join(viewsDir, 'shipping-policy.html')));
 app.get('/refund-and-cancellation', (req, res) => res.sendFile(path.join(viewsDir, 'refund-and-cancellation.html')));
-
-// Static
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(viewsDir));
 
 // ══════ API — Orders ══════
 app.post('/api/orders', async (req, res) => {
