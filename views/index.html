@@ -46,7 +46,7 @@
   font-size: 1.1rem; color: rgb(255, 255, 255); max-width: 470px;
   margin-bottom: 38px; line-height: 1.85;
 }
-.hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+.hero-actions { display: flex; gap: 24px; flex-wrap: wrap; }
 .hero-visual { animation: slideLeft 1s ease-out 0.5s both; position: relative; }
 .hero-product-wrap { position: relative; display: flex; justify-content: center; align-items: center; }
 .hero-glow {
@@ -201,6 +201,8 @@
 }
 .cta-banner h2 { font-size: clamp(1.8rem, 3vw, 2.8rem); color: var(--bark); margin-bottom: 14px; position: relative; z-index: 1; }
 .cta-banner p { color: var(--bark-light); font-size: 1.05rem; margin-bottom: 32px; position: relative; z-index: 1; }
+.cta-banner .btn-primary, .cta-banner .btn-offer { position: relative; z-index: 1; }
+.cta-banner .btn-primary { margin-right: 24px; }
 
 /* ── Offer Button ── */
 .btn-offer {
@@ -271,8 +273,8 @@
       <h1>Ancient Wisdom for <em>Modern Oral Care</em></h1>
       <p>Ayufresh Botanical Oral Care harnesses traditional Ayurvedic ingredients — Clove, Neem & Custard Apple Leaf — for naturally healthy gums and lasting freshness.</p>
       <div class="hero-actions">
-        <a href="/order" class="btn-offer"> Buy 2 @ ₹399</a>
         <a href="/order" class="btn-primary"><span>Order Now — ₹249</span></a>
+        <a href="/order" class="btn-offer"> Buy 2 @ ₹399</a>
         <a href="#benefits" class="btn-secondary">Explore Benefits</a>
       </div>
       <div class="hero-stats">
@@ -383,8 +385,8 @@
 <section class="cta-banner">
   <h2 class="reveal">Ready to Switch to Natural?</h2>
   <p class="reveal">Join thousands who trust Ayurvedic oral care for their family.</p>
-  <a href="/order" class="btn-offer reveal"> Buy 2 @ ₹399</a>
   <a href="/order" class="btn-primary reveal"><span>Order Ayufresh — ₹249</span></a>
+  <a href="/order" class="btn-offer reveal"> Buy 2 @ ₹399</a>
 </section>
 
 <!-- FOOTER -->
@@ -403,8 +405,4 @@
 <script>
   createLeafParticles('heroParticles', 12);
   staggerChildren('.benefits-grid .benefit-card');
-  staggerChildren('.ingredients-grid .ingredient-card');
-  staggerChildren('.testimonials-grid .testimonial-card');
-</script>
-</body>
-</html>
+  staggerCh
