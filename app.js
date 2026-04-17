@@ -241,7 +241,7 @@ app.get('/api/invoice/:orderId', async (req, res) => {
 <table>
   <thead><tr><th>Item</th><th>Qty</th><th>Price</th><th>Amount</th></tr></thead>
   <tbody>
-    <tr><td>Ayufresh Botanical Oral Care (100ml)</td><td>${qty}</td><td>₹${price}</td><td>₹${productTotal}</td></tr>
+    <tr><td>Ayufresh Botanical Tooth & Gums Protector (100ml)</td><td>${qty}</td><td>₹${price}</td><td>₹${productTotal}</td></tr>
     <tr><td>Delivery Charges</td><td>—</td><td>—</td><td>₹${delivery}</td></tr>
     <tr class="total-row"><td colspan="3">Total</td><td>₹${order.total}</td></tr>
   </tbody>
@@ -249,7 +249,7 @@ app.get('/api/invoice/:orderId', async (req, res) => {
 <p><strong>Payment:</strong> ${order.payment.toUpperCase()} (${order.payment_status || 'pending'})</p>
 <p><strong>Status:</strong> ${order.status}</p>
 <div class="footer">
-  <p>Ayufresh Botanical Oral Care · Pune, Maharashtra, India</p>
+  <p>Ayufresh Botanical Tooth & Gums Protector · Pune, Maharashtra, India</p>
   <p>ayufresh6@gmail.com · +91 98819 94473</p>
 </div>
 </body></html>`;

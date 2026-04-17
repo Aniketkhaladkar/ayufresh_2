@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contact — Ayufresh Botanical Oral Care</title>
+<title>Contact — Ayufresh Botanical Tooth & Gums Protector</title>
 <link rel="stylesheet" href="/css/styles.css">
 <style>
 .contact-hero {
@@ -115,7 +115,7 @@
 
 <footer class="footer">
   <div class="footer-inner">
-    <div class="footer-brand"><img src="/images/ayufresh_logo.png" alt="Ayufresh"><p>Ayufresh Botanical Oral Care — natural herbal mouth protector. Made in Pune, Maharashtra.</p></div>
+    <div class="footer-brand"><img src="/images/ayufresh_logo.png" alt="Ayufresh"><p>Ayufresh Botanical Tooth & Gums Protector — natural herbal formula. Made in Pune, Maharashtra.</p></div>
     <div class="footer-col"><h4>Pages</h4><a href="/">Home</a><a href="/about">About</a><a href="/contact">Contact</a><a href="/order">Order</a></div>
     <div class="footer-col"><h4>Product</h4><a href="/#benefits">Benefits</a><a href="/#benefits">Ingredients</a><a href="/#benefits">How to Use</a></div>
     <div class="footer-col"><h4>Legal</h4><a href="/terms-and-conditions">Terms & Conditions</a><a href="/privacy-policy">Privacy Policy</a><a href="/shipping-policy">Shipping Policy</a><a href="/refund-and-cancellation">Refund & Cancellation</a></div>
@@ -145,9 +145,4 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
     const json = await res.json();
     if (json.success) { showToast('💌 Message sent! We\'ll respond within 24 hours.'); e.target.reset(); }
     else showToast('⚠️ ' + (json.error || 'Failed to send'));
-  } catch { showToast('⚠️ Network error — please try again'); }
-  btn.textContent = 'Send Message'; btn.disabled = false;
-});
-</script>
-</body>
-</html>
+  } catch { showToast('⚠�

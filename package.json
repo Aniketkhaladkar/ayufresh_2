@@ -1,7 +1,7 @@
 {
   "name": "ayufresh-website",
   "version": "1.0.0",
-  "description": "Ayufresh Botanical Oral Care — Full Stack Website",
+  "description": "Ayufresh Botanical Tooth & Gums Protector — Full Stack Website",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
