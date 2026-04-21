@@ -275,7 +275,7 @@ document.getElementById('orderForm').addEventListener('submit', async (e) => {
       if (json.success) {
         window.location.href = `/order-success?id=${json.order_id}&total=${json.total}`;
       } else {
-        showToast("Order failed", true);
+        showToast("Order failed: " + (json.detail || json.error), true);
       }
     }
     // Online Payment Flow
@@ -327,5 +327,7 @@ document.getElementById('orderForm').addEventListener('submit', async (e) => {
 // Initial load calculation
 changeQty(0);
 </script>
+<a href="https://wa.me/919881994473" target="_blank" rel="noopener" class="whatsapp-float" aria-label="Chat on WhatsApp"><span class="whatsapp-float-text"><span class="wa-label">Need Help?</span><span class="wa-cta">Chat with us</span></span><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"></a>
 </body>
 </html>
+                                                                                                           

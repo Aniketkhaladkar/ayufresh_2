@@ -9,12 +9,12 @@ const { Pool } = require('pg');
 const app = express();
 
 // ══════ Postgres Pool (Supabase) ══════
-if (!process.env.DATABASE_URL) {
-  console.warn('⚠️  DATABASE_URL is not set. DB calls will fail.');
-}
-
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  host: process.env.DB_HOST || 'aws-0-ap-south-1.pooler.supabase.com',
+  port: parseInt(process.env.DB_PORT || '6543'),
+  database: process.env.DB_NAME || 'postgres',
+  user: process.env.DB_USER || 'postgres.xrteltehjqpfznovhmqe',
+  password: process.env.DB_PASSWORD || '',
   ssl: { rejectUnauthorized: false },
   max: 3,
   idleTimeoutMillis: 10000,
@@ -49,20 +49,7 @@ const viewsDir = path.join(baseDir, 'views');
 app.use(express.static(path.join(baseDir, 'public')));
 app.use(express.static(viewsDir));
 
-// Debug route (remove after confirming deployment works)
-app.get('/api/debug-paths', (req, res) => {
-  const publicDir = path.join(baseDir, 'public');
-  res.json({
-    __dirname,
-    baseDir,
-    viewsDir,
-    publicDir,
-    viewsExists: fs.existsSync(viewsDir),
-    publicExists: fs.existsSync(publicDir),
-    publicJsExists: fs.existsSync(path.join(publicDir, 'js', 'main.js')),
-    publicCssExists: fs.existsSync(path.join(publicDir, 'css', 'styles.css')),
-  });
-});
+
 
 // ══════ PAGE ROUTES ══════
 app.get('/', (req, res) => res.sendFile(path.join(viewsDir, 'index.html')));
@@ -76,6 +63,26 @@ app.get('/privacy-policy', (req, res) => res.sendFile(path.join(viewsDir, 'priva
 app.get('/terms-and-conditions', (req, res) => res.sendFile(path.join(viewsDir, 'terms-and-conditions.html')));
 app.get('/shipping-policy', (req, res) => res.sendFile(path.join(viewsDir, 'shipping-policy.html')));
 app.get('/refund-and-cancellation', (req, res) => res.sendFile(path.join(viewsDir, 'refund-and-cancellation.html')));
+
+// ══════ Health Check (temporary — remove after debugging) ══════
+app.get('/api/health', async (req, res) => {
+  const info = {
+    db_host: process.env.DB_HOST || 'NOT SET',
+    db_user: process.env.DB_USER || 'NOT SET',
+    db_port: process.env.DB_PORT || 'NOT SET',
+    db_password_set: !!process.env.DB_PASSWORD,
+    node_env: process.env.NODE_ENV || 'not set'
+  };
+  try {
+    const result = await pool.query('SELECT NOW() AS time');
+    info.db_connected = true;
+    info.db_time = result.rows[0].time;
+  } catch (err) {
+    info.db_connected = false;
+    info.db_error = err.message;
+  }
+  res.json(info);
+});
 
 // ══════ API — Orders ══════
 app.post('/api/orders', async (req, res) => {
@@ -97,8 +104,8 @@ app.post('/api/orders', async (req, res) => {
 
     res.json({ success: true, order_id, total, delivery });
   } catch (err) {
-    console.error('Order error:', err);
-    res.status(500).json({ error: 'Failed to place order' });
+    console.error('Order error:', err.message, err.code);
+    res.status(500).json({ error: 'Failed to place order', detail: err.message });
   }
 });
 
@@ -152,8 +159,8 @@ app.post('/api/contacts', async (req, res) => {
     );
     res.json({ success: true });
   } catch (err) {
-    console.error('Contact error:', err);
-    res.status(500).json({ error: 'Failed to save message' });
+    console.error('Contact error:', err.message, err.code);
+    res.status(500).json({ error: 'Failed to save message', detail: err.message });
   }
 });
 

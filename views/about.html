@@ -57,6 +57,21 @@
 .about-cta h2 { font-size: 2rem; margin-bottom: 14px; }
 .about-cta p { color: var(--bark-light); margin-bottom: 28px; font-size: 1.05rem; }
 
+/* ── Offer Button ── */
+.btn-offer {
+  display: inline-block; padding: 14px 28px; font-size: 1rem; font-weight: 700;
+  border-radius: 30px; text-transform: uppercase; letter-spacing: 0.06em;
+  background: linear-gradient(135deg, #ff9800, #ff5722); color: #fff;
+  box-shadow: 0 8px 20px rgba(255, 87, 34, 0.4); transition: var(--ease);
+  animation: pulseOffer 1.5s infinite;
+}
+.btn-offer:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 12px 30px rgba(255, 87, 34, 0.6); }
+@keyframes pulseOffer {
+  0% { box-shadow: 0 0 0 0 rgba(255, 87, 34, 0.6); }
+  70% { box-shadow: 0 0 0 12px rgba(255, 87, 34, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 87, 34, 0); }
+}
+
 @media (max-width: 768px) {
   .about-hero { padding: 140px 24px 70px; }
   .about-content { padding: 60px 24px; }
@@ -85,6 +100,10 @@
 <section class="about-hero">
   <h1>About Ayufresh</h1>
   <p>Rooted in Ayurveda. Crafted with care in Pune, Maharashtra.</p>
+  <a href="/order" class="btn-sand" style="margin-top:28px; position:relative; z-index:1;">
+    <span>Order Now — ₹249</span>
+  </a>
+  <a href="/order" class="btn-offer"> Buy 2 @ ₹399</a>
 </section>
 
 <div class="about-content">
@@ -110,7 +129,7 @@
   <div class="values-grid">
     <div class="value-card reveal"><span class="value-icon">🌱</span><h3>100% Natural</h3><p>Every ingredient sourced from nature. No synthetic chemicals, no artificial preservatives.</p></div>
     <div class="value-card reveal"><span class="value-icon">📜</span><h3>Ayurvedic Heritage</h3><p>Formulations rooted in thousands of years of proven Ayurvedic knowledge.</p></div>
-    <div class="value-card reveal"><span class="value-icon">🇮🇳</span><h3>Made in India</h3><p>Proudly manufactured in Pune, Maharashtra. Supporting local sourcing and traditions.</p></div>
+    <div class="value-card reveal"><span class="value-icon"><img src="https://flagcdn.com/28x21/in.png" alt="India" style="vertical-align: middle;"></span><h3>Made in India</h3><p>Proudly manufactured in Pune, Maharashtra. Supporting local sourcing and traditions.</p></div>
   </div>
 
   <div class="about-cta reveal">
@@ -128,8 +147,9 @@
     <div class="footer-col"><h4>Legal</h4><a href="/terms-and-conditions">Terms & Conditions</a><a href="/privacy-policy">Privacy Policy</a><a href="/shipping-policy">Shipping Policy</a><a href="/refund-and-cancellation">Refund & Cancellation</a></div>
     <div class="footer-col"><h4>Connect</h4><a href="https://www.instagram.com/ayufresh.oralcare?igsh=b3lmd3NnbjB1cXd1">Instagram</a><a href="https://wa.me/919881994473">WhatsApp</a><a href="https://www.facebook.com/share/1L5a3xifqS/">Facebook</a></div>
   </div>
-  <div class="footer-bottom">© 2026 Ayufresh. All rights reserved.</div>
+  <div class="footer-bottom">© 2026 Ayufresh. All rights reserved. Pune, Maharashtra, India.</div>
 </footer>
-
 <script src="/js/main.js"></script>
-<script>staggerChildren('.v
+<a href="https://wa.me/919881994473" target="_blank" rel="noopener" class="whatsapp-float" aria-label="Chat on WhatsApp"><span class="whatsapp-float-text"><span class="wa-label">Need Help?</span><span class="wa-cta">Chat with us</span></span><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"></a>
+</body>
+</html>

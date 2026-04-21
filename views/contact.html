@@ -53,6 +53,21 @@
 }
 .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
+/* ── Offer Button ── */
+.btn-offer {
+  display: inline-block; padding: 14px 28px; font-size: 1rem; font-weight: 700;
+  border-radius: 30px; text-transform: uppercase; letter-spacing: 0.06em;
+  background: linear-gradient(135deg, #ff9800, #ff5722); color: #fff;
+  box-shadow: 0 8px 20px rgba(255, 87, 34, 0.4); transition: var(--ease);
+  animation: pulseOffer 1.5s infinite;
+}
+.btn-offer:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 12px 30px rgba(255, 87, 34, 0.6); }
+@keyframes pulseOffer {
+  0% { box-shadow: 0 0 0 0 rgba(255, 87, 34, 0.6); }
+  70% { box-shadow: 0 0 0 12px rgba(255, 87, 34, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 87, 34, 0); }
+}
+
 @media (max-width: 768px) {
   .contact-hero { padding: 140px 24px 70px; }
   .contact-content { grid-template-columns: 1fr; padding: 60px 24px; gap: 48px; }
@@ -78,6 +93,10 @@
 <section class="contact-hero">
   <h1>Get in Touch</h1>
   <p>Have questions about Ayufresh? We'd love to hear from you.</p>
+  <a href="/order" class="btn-sand" style="margin-top:28px; position:relative; z-index:1;">
+    <span>Order Now — ₹249</span>
+  </a>
+  <a href="/order" class="btn-offer"><span>Buy 2 @ ₹399</span></a>
 </section>
 
 <div class="contact-content">
@@ -123,26 +142,41 @@
   </div>
   <div class="footer-bottom">© 2026 Ayufresh. All rights reserved.</div>
 </footer>
-
 <script src="/js/main.js"></script>
 <script>
-function showToast(msg, duration = 3500) {
+function showToast(msg, isError = false) {
   const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), duration);
+  t.textContent = msg;
+  t.className = 'toast show' + (isError ? ' error' : '');
+  setTimeout(() => t.className = 'toast', 3500);
 }
-
 document.getElementById('contactForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const btn = document.getElementById('sendBtn');
-  btn.textContent = 'Sending...'; btn.disabled = true;
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
   const fd = new FormData(e.target);
   const data = Object.fromEntries(fd);
   try {
     const res = await fetch('/api/contacts', {
-      method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data)
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(data)
     });
     const json = await res.json();
-    if (json.success) { showToast('💌 Message sent! We\'ll respond within 24 hours.'); e.target.reset(); }
-    else showToast('⚠️ ' + (json.error || 'Failed to send'));
-  } catch { showToast('⚠�
+    if (json.success) {
+      showToast('Message sent successfully!');
+      e.target.reset();
+    } else {
+      showToast('Failed: ' + (json.detail || json.error), true);
+    }
+  } catch (err) {
+    showToast('Error sending message', true);
+  }
+  btn.textContent = 'Send Message';
+  btn.disabled = false;
+});
+</script>
+<a href="https://wa.me/919881994473" target="_blank" rel="noopener" class="whatsapp-float" aria-label="Chat on WhatsApp"><span class="whatsapp-float-text"><span class="wa-label">Need Help?</span><span class="wa-cta">Chat with us</span></span><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"></a>
+</body>
+</html>

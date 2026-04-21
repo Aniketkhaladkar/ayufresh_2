@@ -257,4 +257,8 @@
 window.addEventListener('scroll',()=>{document.getElementById('btt').classList.toggle('visible',scrollY>300)});
 const sections=document.querySelectorAll('.policy-content h2'),tocLinks=document.querySelectorAll('.toc-list a');
 window.addEventListener('scroll',()=>{let c='';sections.forEach(s=>{if(scrollY>=s.offsetTop-120)c=s.id});tocLinks.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+c))});
-document.querySelectorAll('.toc-list a').forEach(a=>a.addEventListener('click',e=>{e
+document.querySelectorAll('.toc-list a').document.querySelectorAll('.toc-list a').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth',block:'start'})}));
+</script>
+<a href="https://wa.me/919881994473" target="_blank" rel="noopener" class="whatsapp-float" aria-label="Chat on WhatsApp"><span class="whatsapp-float-text"><span class="wa-label">Need Help?</span><span class="wa-cta">Chat with us</span></span><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"></a>
+</body>
+</html>
