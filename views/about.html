@@ -44,11 +44,12 @@
 .value-card {
   text-align: center; padding: 44px 26px; background: var(--white);
   border-radius: var(--r-lg); border: 1px solid rgba(229,214,196,0.35); transition: var(--ease);
+  display: flex; flex-direction: column; align-items: center;
 }
 .value-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
-.value-icon { font-size: 2.6rem; margin-bottom: 18px; display: block; }
+.value-icon { font-size: 2.6rem; margin-bottom: 18px; display: flex; align-items: center; justify-content: center; height: 50px; }
 .value-card h3 { font-size: 1.15rem; margin-bottom: 10px; }
-.value-card p { font-size: 0.9rem; color: var(--bark); line-height: 1.75; }
+.value-card p { font-size: 1rem; color: var(--text-body); line-height: 1.85; margin-top: auto; }
 
 .about-cta {
   margin-top: 80px; text-align: center; padding: 64px 48px;
