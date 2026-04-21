@@ -13,8 +13,8 @@
 .success-card p{color:var(--text-light);margin-bottom:10px;line-height:1.75}
 .order-id-box{margin:28px 0;padding:18px 24px;background:var(--sand-light);border-radius:var(--r-md);display:inline-block}
 .order-id-label{font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--bark-mid)}
-.order-id-val{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--bark);margin-top:4px}
-.order-total{font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;color:var(--bark);margin:16px 0}
+.order-id-val{font-family:'Outfit',sans-serif;font-size:1.2rem;font-weight:600;color:var(--bark);margin-top:4px;letter-spacing:0.02em}
+.order-total{font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:600;color:var(--bark);margin:16px 0}
 .success-actions{display:flex;gap:14px;justify-content:center;margin-top:32px;flex-wrap:wrap}
 </style>
 </head>
@@ -52,7 +52,7 @@ const params = new URLSearchParams(window.location.search);
 const id = params.get('id');
 const total = params.get('total');
 if (id) document.getElementById('orderId').textContent = id;
-if (total) document.getElementById('orderTotal').textContent = total;
+if (total) document.getElementById('orderTotal').textContent = '₹' + total;
 </script>
 <a href="https://wa.me/919881994473" target="_blank" rel="noopener" class="whatsapp-float" aria-label="Chat on WhatsApp"><span class="whatsapp-float-text"><span class="wa-label">Need Help?</span><span class="wa-cta">Chat with us</span></span><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"></a>
 </body>

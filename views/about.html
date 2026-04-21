@@ -11,7 +11,7 @@
   padding: 170px 48px 100px; text-align: center; position: relative; overflow: hidden;
 }
 .about-hero::before {
-  content: ''; position: absolute; inset: 0;
+  content: ''; position: absolute; inset: 0; z-index: 0;
   background: radial-gradient(ellipse at 50% 40%, rgba(229,214,196,0.1) 0%, transparent 60%);
 }
 .about-hero h1 { color: var(--sand-light); font-size: clamp(2.5rem, 4vw, 3.8rem); margin-bottom: 16px; position: relative; z-index: 1; }
@@ -100,10 +100,10 @@
 <section class="about-hero">
   <h1>About Ayufresh</h1>
   <p>Rooted in Ayurveda. Crafted with care in Pune, Maharashtra.</p>
-  <a href="/order" class="btn-sand" style="margin-top:28px; position:relative; z-index:1;">
-    <span>Order Now — ₹249</span>
-  </a>
-  <a href="/order" class="btn-offer"> Buy 2 @ ₹399</a>
+  <div style="display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:28px;position:relative;z-index:1;">
+    <a href="/order" class="btn-sand"><span>Order Now — ₹249</span></a>
+    <a href="/order" class="btn-offer">Buy 2 @ ₹399</a>
+  </div>
 </section>
 
 <div class="about-content">
@@ -129,7 +129,7 @@
   <div class="values-grid">
     <div class="value-card reveal"><span class="value-icon">🌱</span><h3>100% Natural</h3><p>Every ingredient sourced from nature. No synthetic chemicals, no artificial preservatives.</p></div>
     <div class="value-card reveal"><span class="value-icon">📜</span><h3>Ayurvedic Heritage</h3><p>Formulations rooted in thousands of years of proven Ayurvedic knowledge.</p></div>
-    <div class="value-card reveal"><span class="value-icon"><img src="https://flagcdn.com/28x21/in.png" alt="India" style="vertical-align: middle;"></span><h3>Made in India</h3><p>Proudly manufactured in Pune, Maharashtra. Supporting local sourcing and traditions.</p></div>
+    <div class="value-card reveal"><span class="value-icon" style="display:flex;align-items:center;justify-content:center;"><img src="https://flagcdn.com/48x36/in.png" alt="India" style="width:36px;height:auto;"></span><h3>Made in India</h3><p>Proudly manufactured in Pune, Maharashtra. Supporting local sourcing and traditions.</p></div>
   </div>
 
   <div class="about-cta reveal">
