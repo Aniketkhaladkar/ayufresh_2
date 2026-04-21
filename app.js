@@ -1,55 +1,33 @@
 // ============================================
-// AYUFRESH — Express app (Supabase/Postgres)
+// AYUFRESH — Express app (Supabase REST API)
 // ============================================
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
-const { Pool } = require('pg');
+const { createClient } = require('@supabase/supabase-js');
 
 const app = express();
 
-// ══════ Postgres Pool (Supabase) ══════
-const pool = new Pool({
-  host: process.env.DB_HOST || 'aws-0-ap-south-1.pooler.supabase.com',
-  port: parseInt(process.env.DB_PORT || '6543'),
-  database: process.env.DB_NAME || 'postgres',
-  user: process.env.DB_USER || 'postgres.xrteltehjqpfznovhmqe',
-  password: process.env.DB_PASSWORD || '',
-  ssl: { rejectUnauthorized: false },
-  max: 3,
-  idleTimeoutMillis: 10000,
-  connectionTimeoutMillis: 10000,
-});
+// ══════ Supabase Client (HTTPS — no Postgres connection needed) ══════
+const SUPABASE_URL = process.env.SUPABASE_URL || 'https://xrteltehjqpfznovhmqe.supabase.co';
+const SUPABASE_KEY = process.env.SUPABASE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhydGVsdGVoanFwZnpub3ZobXFlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyNDU5MTgsImV4cCI6MjA5MTgyMTkxOH0.dKBQdgRRiMPcSqP7F2CxGBhSO-4jXQHuGFHeR7ezws0';
 
-async function queryAll(sql, params = []) {
-  const { rows } = await pool.query(sql, params);
-  return rows;
-}
-async function queryOne(sql, params = []) {
-  const { rows } = await pool.query(sql, params);
-  return rows[0] || null;
-}
-async function runSql(sql, params = []) {
-  await pool.query(sql, params);
-}
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ══════ Root dir (works on both local & Vercel serverless) ══════
+// ══════ Root dir ══════
 const fs = require('fs');
-// On Vercel, __dirname may point to /var/task or /var/task/api — find where views/ actually lives
 let baseDir = __dirname;
 if (!fs.existsSync(path.join(baseDir, 'views')) && fs.existsSync(path.join(baseDir, '..', 'views'))) {
   baseDir = path.resolve(baseDir, '..');
 }
 
-// ══════ Static (before page routes so JS/CSS/images load first) ══════
+// ══════ Static (before page routes) ══════
 const viewsDir = path.join(baseDir, 'views');
 app.use(express.static(path.join(baseDir, 'public')));
 app.use(express.static(viewsDir));
-
-
 
 // ══════ PAGE ROUTES ══════
 app.get('/', (req, res) => res.sendFile(path.join(viewsDir, 'index.html')));
@@ -64,19 +42,16 @@ app.get('/terms-and-conditions', (req, res) => res.sendFile(path.join(viewsDir, 
 app.get('/shipping-policy', (req, res) => res.sendFile(path.join(viewsDir, 'shipping-policy.html')));
 app.get('/refund-and-cancellation', (req, res) => res.sendFile(path.join(viewsDir, 'refund-and-cancellation.html')));
 
-// ══════ Health Check (temporary — remove after debugging) ══════
+// ══════ Health Check ══════
 app.get('/api/health', async (req, res) => {
   const info = {
-    db_host: process.env.DB_HOST || 'NOT SET',
-    db_user: process.env.DB_USER || 'NOT SET',
-    db_port: process.env.DB_PORT || 'NOT SET',
-    db_password_set: !!process.env.DB_PASSWORD,
-    node_env: process.env.NODE_ENV || 'not set'
+    supabase_url: SUPABASE_URL,
+    supabase_key_set: !!SUPABASE_KEY
   };
   try {
-    const result = await pool.query('SELECT NOW() AS time');
+    const { data, error } = await supabase.from('orders').select('id').limit(1);
+    if (error) throw error;
     info.db_connected = true;
-    info.db_time = result.rows[0].time;
   } catch (err) {
     info.db_connected = false;
     info.db_error = err.message;
@@ -95,16 +70,16 @@ app.post('/api/orders', async (req, res) => {
     let productTotal = (qty === 2) ? 399 : qty * price;
     const total = productTotal + delivery;
 
-    await runSql(
-      `INSERT INTO orders (order_id,name,phone,email,address,city,state,pin,quantity,total,payment,payment_status)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)`,
-      [order_id, name, phone, email, address, city, state || 'Maharashtra', pin, qty, total, payment,
-       payment === 'cod' ? 'pending' : 'paid']
-    );
+    const { error } = await supabase.from('orders').insert({
+      order_id, name, phone, email, address, city,
+      state: state || 'Maharashtra', pin, quantity: qty,
+      total, payment, payment_status: payment === 'cod' ? 'pending' : 'paid'
+    });
 
+    if (error) throw error;
     res.json({ success: true, order_id, total, delivery });
   } catch (err) {
-    console.error('Order error:', err.message, err.code);
+    console.error('Order error:', err.message);
     res.status(500).json({ error: 'Failed to place order', detail: err.message });
   }
 });
@@ -117,9 +92,9 @@ app.post('/api/create-payment', async (req, res) => {
 // ══════ API — Order Tracking ══════
 app.get('/api/track/:id', async (req, res) => {
   try {
-    const order = await queryOne('SELECT * FROM orders WHERE order_id=$1', [req.params.id]);
-    if (!order) return res.status(404).json({ error: 'Order not found' });
-    res.json(order);
+    const { data, error } = await supabase.from('orders').select('*').eq('order_id', req.params.id).single();
+    if (error || !data) return res.status(404).json({ error: 'Order not found' });
+    res.json(data);
   } catch (err) {
     console.error('Track error:', err);
     res.status(500).json({ error: 'Failed to track order' });
@@ -129,8 +104,10 @@ app.get('/api/track/:id', async (req, res) => {
 // ══════ API — Reviews ══════
 app.post('/api/review', async (req, res) => {
   try {
-    await runSql('INSERT INTO reviews (name, review, rating) VALUES ($1,$2,$3)',
-      [req.body.name, req.body.review, req.body.rating]);
+    const { error } = await supabase.from('reviews').insert({
+      name: req.body.name, review: req.body.review, rating: req.body.rating
+    });
+    if (error) throw error;
     res.json({ success: true });
   } catch (err) {
     console.error('Review error:', err);
@@ -140,7 +117,9 @@ app.post('/api/review', async (req, res) => {
 
 app.get('/api/reviews', async (req, res) => {
   try {
-    res.json(await queryAll('SELECT * FROM reviews ORDER BY created_at DESC'));
+    const { data, error } = await supabase.from('reviews').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    res.json(data);
   } catch (err) {
     res.status(500).json({ error: 'Failed to load reviews' });
   }
@@ -153,13 +132,13 @@ app.post('/api/contacts', async (req, res) => {
     if (!name || !email || !message) {
       return res.status(400).json({ error: 'Name, email and message are required' });
     }
-    await runSql(
-      'INSERT INTO contacts (name, email, phone, subject, message) VALUES ($1,$2,$3,$4,$5)',
-      [name, email, phone || '', subject || '', message]
-    );
+    const { error } = await supabase.from('contacts').insert({
+      name, email, phone: phone || '', subject: subject || '', message
+    });
+    if (error) throw error;
     res.json({ success: true });
   } catch (err) {
-    console.error('Contact error:', err.message, err.code);
+    console.error('Contact error:', err.message);
     res.status(500).json({ error: 'Failed to save message', detail: err.message });
   }
 });
@@ -176,11 +155,12 @@ app.post('/api/admin/login', (req, res) => {
 
 app.get('/api/admin/stats', async (req, res) => {
   try {
-    const totalOrders = (await queryOne('SELECT COUNT(*)::int AS c FROM orders'))?.c || 0;
-    const totalRevenue = (await queryOne(`SELECT COALESCE(SUM(total),0)::float AS s FROM orders WHERE status != 'cancelled'`))?.s || 0;
-    const pendingOrders = (await queryOne(`SELECT COUNT(*)::int AS c FROM orders WHERE status = 'pending'`))?.c || 0;
-    const unreadContacts = (await queryOne('SELECT COUNT(*)::int AS c FROM contacts WHERE read = 0'))?.c || 0;
-    res.json({ totalOrders, totalRevenue, pendingOrders, unreadContacts });
+    const { count: totalOrders } = await supabase.from('orders').select('*', { count: 'exact', head: true });
+    const { data: revData } = await supabase.from('orders').select('total').neq('status', 'cancelled');
+    const totalRevenue = (revData || []).reduce((sum, o) => sum + Number(o.total), 0);
+    const { count: pendingOrders } = await supabase.from('orders').select('*', { count: 'exact', head: true }).eq('status', 'pending');
+    const { count: unreadContacts } = await supabase.from('contacts').select('*', { count: 'exact', head: true }).eq('read', 0);
+    res.json({ totalOrders: totalOrders || 0, totalRevenue, pendingOrders: pendingOrders || 0, unreadContacts: unreadContacts || 0 });
   } catch (err) {
     console.error('Stats error:', err);
     res.status(500).json({ error: 'Failed to load stats' });
@@ -189,7 +169,9 @@ app.get('/api/admin/stats', async (req, res) => {
 
 app.get('/api/admin/orders', async (req, res) => {
   try {
-    res.json(await queryAll('SELECT * FROM orders ORDER BY created_at DESC'));
+    const { data, error } = await supabase.from('orders').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    res.json(data);
   } catch (err) {
     console.error('Admin orders error:', err);
     res.status(500).json({ error: 'Failed to load orders' });
@@ -198,11 +180,11 @@ app.get('/api/admin/orders', async (req, res) => {
 
 app.patch('/api/admin/orders/:id', async (req, res) => {
   try {
-    const { status, delivery_partner } = req.body;
-    if (status) await runSql('UPDATE orders SET status = $1 WHERE id = $2', [status, req.params.id]);
-    if (delivery_partner !== undefined) {
-      await runSql('UPDATE orders SET delivery_partner = $1 WHERE id = $2', [delivery_partner, req.params.id]);
-    }
+    const updates = {};
+    if (req.body.status) updates.status = req.body.status;
+    if (req.body.delivery_partner !== undefined) updates.delivery_partner = req.body.delivery_partner;
+    const { error } = await supabase.from('orders').update(updates).eq('id', req.params.id);
+    if (error) throw error;
     res.json({ success: true });
   } catch (err) {
     console.error('Update order error:', err);
@@ -212,7 +194,8 @@ app.patch('/api/admin/orders/:id', async (req, res) => {
 
 app.delete('/api/admin/orders/:id', async (req, res) => {
   try {
-    await runSql('DELETE FROM orders WHERE id = $1', [req.params.id]);
+    const { error } = await supabase.from('orders').delete().eq('id', req.params.id);
+    if (error) throw error;
     res.json({ success: true });
   } catch (err) {
     console.error('Delete order error:', err);
@@ -222,7 +205,9 @@ app.delete('/api/admin/orders/:id', async (req, res) => {
 
 app.get('/api/admin/contacts', async (req, res) => {
   try {
-    res.json(await queryAll('SELECT * FROM contacts ORDER BY created_at DESC'));
+    const { data, error } = await supabase.from('contacts').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    res.json(data);
   } catch (err) {
     console.error('Admin contacts error:', err);
     res.status(500).json({ error: 'Failed to load contacts' });
@@ -231,7 +216,8 @@ app.get('/api/admin/contacts', async (req, res) => {
 
 app.patch('/api/admin/contacts/:id/read', async (req, res) => {
   try {
-    await runSql('UPDATE contacts SET read = 1 WHERE id = $1', [req.params.id]);
+    const { error } = await supabase.from('contacts').update({ read: 1 }).eq('id', req.params.id);
+    if (error) throw error;
     res.json({ success: true });
   } catch (err) {
     res.status(500).json({ error: 'Failed to mark as read' });
@@ -241,8 +227,8 @@ app.patch('/api/admin/contacts/:id/read', async (req, res) => {
 // ══════ Invoice ══════
 app.get('/api/invoice/:orderId', async (req, res) => {
   try {
-    const order = await queryOne('SELECT * FROM orders WHERE order_id = $1', [req.params.orderId]);
-    if (!order) return res.status(404).send('Order not found');
+    const { data: order, error } = await supabase.from('orders').select('*').eq('order_id', req.params.orderId).single();
+    if (error || !order) return res.status(404).send('Order not found');
 
     const price = 249;
     const qty = order.quantity || 1;
